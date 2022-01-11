@@ -257,7 +257,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 16,
                       ),
                       Text(
-                        "Secured Authentication GoAbsensi",
+                        "Secured Authentication Presensi PPLH",
                         style: regularGreyFont.copyWith(fontSize: 12),
                       ),
                       SizedBox(

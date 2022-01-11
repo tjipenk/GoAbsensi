@@ -356,6 +356,13 @@ class _MenuActivityComponent extends StatelessWidget {
               },
             ),
             _MenuComponent(
+              titleMenu: "Makan Siang",
+              iconPath: 'assets/images/ic_absen_masuk.png',
+              onTap: () {
+                Navigator.pushNamed(context, CheckMidScreen.routeName);
+              },
+            ),
+            _MenuComponent(
               titleMenu: "Absen Pulang",
               iconPath: 'assets/images/ic_absen_pulang.png',
               onTap: () {
@@ -477,7 +484,7 @@ class _AnnouncementComponent extends StatelessWidget {
                     height: 2,
                   ),
                   Text(
-                    "Absensi menggunakan aplikasi GoAbsensi",
+                    "Absensi menggunakan aplikasi Presensi PPLH",
                     style: semiBlackFont.copyWith(
                       fontSize: 11.5,
                       color: Color(0xFFEEEEEE),

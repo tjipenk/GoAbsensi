@@ -9,6 +9,7 @@ Map<String, WidgetBuilder> appRoute = {
   MainScreen.routeName: (context) => MainScreen(),
   SuccessScreen.routeName: (context) => SuccessScreen(),
   CheckInScreen.routeName: (context) => CheckInScreen(),
+  CheckMidScreen.routeName: (context) => CheckMidScreen(),
   CheckOutScreen.routeName: (context) => CheckOutScreen(),
   HistoryScreen.routeName: (context) => HistoryScreen(),
   PermitLetterScreen.routeName: (context) => PermitLetterScreen(),

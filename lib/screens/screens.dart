@@ -32,6 +32,7 @@ part 'success_screen.dart';
 part 'dashboard_view.dart';
 part 'presence_view.dart';
 part 'check_in_screen.dart';
+part 'check_mid_screen.dart';
 part 'check_out_screen.dart';
 part 'history_screen.dart';
 part 'permit_letter_screen.dart';

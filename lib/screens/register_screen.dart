@@ -8,18 +8,18 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-
   TextEditingController nidkController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  TextEditingController passwordConfirmationController = TextEditingController();
+  TextEditingController passwordConfirmationController =
+      TextEditingController();
 
   bool isHidePassword = false;
   bool isHidePasswordConfirmation = false;
 
   @override
-  void initState() { 
+  void initState() {
     super.initState();
 
     Future.delayed(Duration.zero, () {
@@ -59,22 +59,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Material(
-                              child: InkWell(
-                                splashColor: Colors.black.withOpacity(0.3),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: FaIcon(
-                                    FontAwesomeIcons.arrowLeft,
-                                    color: darkColor,
-                                    size: 22,
-                                  ),
+                                child: InkWell(
+                              splashColor: Colors.black.withOpacity(0.3),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: FaIcon(
+                                  FontAwesomeIcons.arrowLeft,
+                                  color: darkColor,
+                                  size: 22,
                                 ),
-                                onTap: () {
-                                  Navigator.pop(context);  
-                                  validation.resetChange();                      
-                                },
-                              )
-                            ),
+                              ),
+                              onTap: () {
+                                Navigator.pop(context);
+                                validation.resetChange();
+                              },
+                            )),
                           ),
                           Align(
                             alignment: Alignment.center,
@@ -142,24 +141,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           validation.changePassword(value);
                         },
                         suffixIcon: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              isHidePassword = !isHidePassword;
-                            });
-                          },
-                          child: Theme(
-                            data: Theme.of(context).copyWith(primaryColor: null),
-                            child: (!isHidePassword) ? Icon(
-                              Icons.visibility_off,
-                              size: 20,
-                              color: Color(0xFFC6C6C6),
-                            ) : Icon(
-                              Icons.visibility,
-                              size: 20,
-                              color: Color(0xFFC6C6C6),
-                            ),
-                          )
-                        ),
+                            onTap: () {
+                              setState(() {
+                                isHidePassword = !isHidePassword;
+                              });
+                            },
+                            child: Theme(
+                              data: Theme.of(context)
+                                  .copyWith(primaryColor: null),
+                              child: (!isHidePassword)
+                                  ? Icon(
+                                      Icons.visibility_off,
+                                      size: 20,
+                                      color: Color(0xFFC6C6C6),
+                                    )
+                                  : Icon(
+                                      Icons.visibility,
+                                      size: 20,
+                                      color: Color(0xFFC6C6C6),
+                                    ),
+                            )),
                       ),
                       SizedBox(
                         height: 16,
@@ -171,52 +172,62 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         controller: passwordConfirmationController,
                         errorValidation: validation.errorPasswordConfirmation,
                         onChanged: (value) {
-                          validation.changePasswordConfirmation(value, passwordController.text);
+                          validation.changePasswordConfirmation(
+                              value, passwordController.text);
                         },
                         suffixIcon: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              isHidePasswordConfirmation = !isHidePasswordConfirmation;
-                            });
-                          },
-                          child: Theme(
-                            data: Theme.of(context).copyWith(primaryColor: null),
-                            child: (!isHidePasswordConfirmation) ? Icon(
-                              Icons.visibility_off,
-                              size: 20,
-                              color: Color(0xFFC6C6C6),
-                            ) : Icon(
-                              Icons.visibility,
-                              size: 20,
-                              color: Color(0xFFC6C6C6),
-                            ),
-                          )
-                        ),
+                            onTap: () {
+                              setState(() {
+                                isHidePasswordConfirmation =
+                                    !isHidePasswordConfirmation;
+                              });
+                            },
+                            child: Theme(
+                              data: Theme.of(context)
+                                  .copyWith(primaryColor: null),
+                              child: (!isHidePasswordConfirmation)
+                                  ? Icon(
+                                      Icons.visibility_off,
+                                      size: 20,
+                                      color: Color(0xFFC6C6C6),
+                                    )
+                                  : Icon(
+                                      Icons.visibility,
+                                      size: 20,
+                                      color: Color(0xFFC6C6C6),
+                                    ),
+                            )),
                       ),
                       SizedBox(
                         height: 30,
                       ),
                       CustomRaisedButton(
                         "Selanjutnya",
-                        color: (validation.isAllValidate()) ? primaryColor : Color(0xFFCDCBCB),
-                        onPressed: (validation.isAllValidate()) ? () async {
-                          Navigator.pushNamed(context, UploadPhotoScreen.routeName,
-                            arguments: RouteArgument(
-                              auth: Auth(
-                                nidk: nidkController.text,
-                                name: nameController.text,
-                                email: emailController.text,
-                                password: passwordController.text,
-                              ),
-                            ),
-                          );
-                        } : null,
+                        color: (validation.isAllValidate())
+                            ? primaryColor
+                            : Color(0xFFCDCBCB),
+                        onPressed: (validation.isAllValidate())
+                            ? () async {
+                                Navigator.pushNamed(
+                                  context,
+                                  UploadPhotoScreen.routeName,
+                                  arguments: RouteArgument(
+                                    auth: Auth(
+                                      nidk: nidkController.text,
+                                      name: nameController.text,
+                                      email: emailController.text,
+                                      password: passwordController.text,
+                                    ),
+                                  ),
+                                );
+                              }
+                            : null,
                       ),
                       SizedBox(
                         height: 30,
                       ),
                       Text(
-                        "Secured Authentication GoAbsensi",
+                        "Secured Authentication Presensi PPLH",
                         style: regularGreyFont.copyWith(fontSize: 12),
                       ),
                       SizedBox(

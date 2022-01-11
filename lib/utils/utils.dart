@@ -13,6 +13,7 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trust_location/trust_location.dart';
+import 'package:flutter_native_image/flutter_native_image.dart';
 
 part 'alert_utils.dart';
 part 'route_utils.dart';

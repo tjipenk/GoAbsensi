@@ -39,21 +39,20 @@ class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Material(
-                            child: InkWell(
-                              splashColor: Colors.black.withOpacity(0.3),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: FaIcon(
-                                  FontAwesomeIcons.arrowLeft,
-                                  color: darkColor,
-                                  size: 22,
-                                ),
+                              child: InkWell(
+                            splashColor: Colors.black.withOpacity(0.3),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: FaIcon(
+                                FontAwesomeIcons.arrowLeft,
+                                color: darkColor,
+                                size: 22,
                               ),
-                              onTap: () {
-                                Navigator.pop(context);                        
-                              },
-                            )
-                          ),
+                            ),
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                          )),
                         ),
                         Align(
                           alignment: Alignment.center,
@@ -89,7 +88,9 @@ class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
                               ),
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: (argument.auth.photo == null) ? AssetImage("assets/images/user_pic.png") : FileImage(argument.auth.photo),
+                                image: (argument.auth.photo == null)
+                                    ? AssetImage("assets/images/user_pic.png")
+                                    : FileImage(argument.auth.photo),
                               ),
                             ),
                           ),
@@ -111,7 +112,9 @@ class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
                                     image: AssetImage(
-                                      (argument.auth.photo == null) ? "assets/images/btn_add_photo.png" : "assets/images/btn_del_photo.png",
+                                      (argument.auth.photo == null)
+                                          ? "assets/images/btn_add_photo.png"
+                                          : "assets/images/btn_del_photo.png",
                                     ),
                                   ),
                                 ),
@@ -135,76 +138,90 @@ class _UploadPhotoScreenState extends State<UploadPhotoScreen> {
                     SizedBox(
                       height: 80,
                     ),
-                    if (isRegistering) SpinKitWave(
-                      size: 50,
-                      color: primaryColor,
-                    )
-                    else CustomRaisedButton(
-                      "Register Sekarang",
-                      color: primaryColor,
-                      onPressed: () async {
-
-                        /// Set isRegistering be 'true' to display loading wave
-                        setState(() {
-                          isRegistering = true;
-                        });
-                        
-                        /// Set variable upload image from route argument
-                        imageFileToUpload = argument.auth.photo;
-                        
-                        /// Get single/multi imei devices in array list
-                        List<String> multiImei = await ImeiPlugin.getImeiMulti(
-                          shouldShowRequestPermissionRationale: false,
-                        );
-                        
-                        /// Get current device position data (GPS required)
-                        List<String> coordinate = await getPosition();
-
-                        /// Call auth services to storing auth data
-                        ResponseHandler result = await AuthServices.register(
-                          Auth(
-                            nidk: argument.auth.nidk,
-                            name: argument.auth.name,
-                            email: argument.auth.email,
-                            password: argument.auth.password,
-                            imei: multiImei,
-                            coordinate: coordinate,
-                          ),
-                        );
-
-                        /// Checking if user failed or success to store 
-                        /// (it will receive response message if failed)
-                        if (result.user == null) {
+                    if (isRegistering)
+                      SpinKitWave(
+                        size: 50,
+                        color: primaryColor,
+                      )
+                    else
+                      CustomRaisedButton(
+                        "Register Sekarang",
+                        color: primaryColor,
+                        onPressed: () async {
+                          /// Set isRegistering be 'true' to display loading wave
                           setState(() {
-                            isRegistering = false;
+                            isRegistering = true;
                           });
 
-                          showAlert(
-                            context,
-                            alert: CustomAlertDialog(
-                              title: generateAuthMessage(result.message).title,
-                              description: generateAuthMessage(result.message).message,
-                              imagePath: generateAuthMessage(result.message).illustration,
+                          /// Set variable upload image from route argument
+                          imageFileToUpload = argument.auth.photo;
+
+                          // Compress photo
+                          // imageFileToUploadOri = imgMod.decodeImage(
+                          //     imageFileToUploadOri.readAsBytesSync());
+                          // imageFileToUpload =
+                          //     imgMod.copyResize(imageFileToUploadOri, 800);
+
+                          /// Get single/multi imei devices in array list
+                          List<String> multiImei =
+                              await ImeiPlugin.getImeiMulti(
+                            shouldShowRequestPermissionRationale: false,
+                          );
+
+                          /// Get current device position data (GPS required)
+                          List<String> coordinate = await getPosition();
+
+                          /// Call auth services to storing auth data
+                          ResponseHandler result = await AuthServices.register(
+                            Auth(
+                              nidk: argument.auth.nidk,
+                              name: argument.auth.name,
+                              email: argument.auth.email,
+                              password: argument.auth.password,
+                              imei: multiImei,
+                              coordinate: coordinate,
                             ),
                           );
-                        } else {
-                          /// Reset validation state
-                          Provider.of<ValidationProvider>(context, listen: false).resetChange();
 
-                          /// Set presence data
-                          await PresenceServices.updatePresence(result.user.id, Presence(0, 0, 0, 0));
+                          /// Checking if user failed or success to store
+                          /// (it will receive response message if failed)
+                          if (result.user == null) {
+                            setState(() {
+                              isRegistering = false;
+                            });
 
-                          /// Redirect to main screen
-                          Navigator.pushReplacementNamed(context, Wrapper.routeName);
-                        }
+                            showAlert(
+                              context,
+                              alert: CustomAlertDialog(
+                                title:
+                                    generateAuthMessage(result.message).title,
+                                description:
+                                    generateAuthMessage(result.message).message,
+                                imagePath: generateAuthMessage(result.message)
+                                    .illustration,
+                              ),
+                            );
+                          } else {
+                            /// Reset validation state
+                            Provider.of<ValidationProvider>(context,
+                                    listen: false)
+                                .resetChange();
 
-                      },
-                    ),
+                            /// Set presence data
+                            await PresenceServices.updatePresence(
+                                result.user.id, Presence(0, 0, 0, 0));
+
+                            /// Redirect to main screen
+                            Navigator.pushReplacementNamed(
+                                context, Wrapper.routeName);
+                          }
+                        },
+                      ),
                     SizedBox(
                       height: 30,
                     ),
                     Text(
-                      "Secured Authentication GoAbsensi",
+                      "Secured Authentication Presensi PPLH",
                       style: regularGreyFont.copyWith(fontSize: 12),
                     ),
                     SizedBox(

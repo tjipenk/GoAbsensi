@@ -1,6 +1,6 @@
 part of 'utils.dart';
 
-Future<bool> isCheckInTime() async {
+Future<bool> isCheckInTimeOri() async {
   int startTime = 7;
   int endTime = 15;
 
@@ -10,7 +10,7 @@ Future<bool> isCheckInTime() async {
   return currentTime >= startTime && currentTime <= endTime;
 }
 
-Future<bool> isCheckOutTime() async {
+Future<bool> isCheckOutTimeOri() async {
   int startTime = 16;
   int endTime = 23;
 
@@ -18,6 +18,14 @@ Future<bool> isCheckOutTime() async {
   int currentTime = ntpTime.hour;
 
   return currentTime >= startTime && currentTime <= endTime;
+}
+
+Future<bool> isCheckInTime() async {
+  return true;
+}
+
+Future<bool> isCheckOutTime() async {
+  return true;
 }
 
 String getSystemTime() {

@@ -1,7 +1,7 @@
 part of 'screens.dart';
 
-class CheckInScreen extends StatelessWidget {
-  static String routeName = '/check_in_screen';
+class CheckMidScreen extends StatelessWidget {
+  static String routeName = '/check_mid_screen';
 
   @override
   Widget build(BuildContext context) {
@@ -25,15 +25,15 @@ class CheckInScreen extends StatelessWidget {
                   SingleChildScrollView(
                     child: Column(
                       children: [
-                        _HeaderCheckInComponent(),
+                        _HeaderCheckMidComponent(),
                         SizedBox(
                           height: 24,
                         ),
-                        _MethodCheckInComponent(),
+                        _MethodCheckMidComponent(),
                         SizedBox(
                           height: 24,
                         ),
-                        _ActivityCheckInComponent(),
+                        _ActivityCheckMidComponent(),
                       ],
                     ),
                   ),
@@ -47,7 +47,7 @@ class CheckInScreen extends StatelessWidget {
   }
 }
 
-class _HeaderCheckInComponent extends StatelessWidget {
+class _HeaderCheckMidComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -93,7 +93,7 @@ class _HeaderCheckInComponent extends StatelessWidget {
           ),
           Center(
             child: Text(
-              "Absen Masuk",
+              "Absen Siang",
               style: boldWhiteFont.copyWith(fontSize: 18),
             ),
           ),
@@ -103,12 +103,13 @@ class _HeaderCheckInComponent extends StatelessWidget {
   }
 }
 
-class _MethodCheckInComponent extends StatefulWidget {
+class _MethodCheckMidComponent extends StatefulWidget {
   @override
-  _MethodCheckInComponentState createState() => _MethodCheckInComponentState();
+  __MethodCheckMidComponentState createState() =>
+      __MethodCheckMidComponentState();
 }
 
-class _MethodCheckInComponentState extends State<_MethodCheckInComponent> {
+class __MethodCheckMidComponentState extends State<_MethodCheckMidComponent> {
   bool isClicked = false;
 
   @override
@@ -146,13 +147,10 @@ class _MethodCheckInComponentState extends State<_MethodCheckInComponent> {
                     isClicked = true;
                   });
 
-                  bool isWorkTime = await isCheckInTime();
-                  bool isFakeLocation = await isFakeGPS();
-                  bool onOfficeRadius = await onRadiusDistance();
                   String absentStatus = await getAbsentStatus();
+                  bool isAwayTime = await isCheckOutTime();
 
-                  if (absentStatus == "CHECK-IN" ||
-                      absentStatus == "CHECK-MID") {
+                  if (absentStatus == "CHECK-MID") {
                     setState(() {
                       isClicked = false;
                     });
@@ -160,13 +158,13 @@ class _MethodCheckInComponentState extends State<_MethodCheckInComponent> {
                     showAlert(
                       context,
                       alert: CustomAlertDialog(
-                        title: "Sudah Absen Masuk",
+                        title: "Sudah Absen Siang",
                         description:
-                            "Kamu sudah melakukan absen masuk untuk hari ini...",
+                            "Kamu sudah melakukan absen suang sebelumnya...",
                         imagePath: 'assets/images/out_worktime.png',
                       ),
                     );
-                  } else if (!isWorkTime) {
+                  } else if (!isAwayTime) {
                     setState(() {
                       isClicked = false;
                     });
@@ -174,67 +172,53 @@ class _MethodCheckInComponentState extends State<_MethodCheckInComponent> {
                     showAlert(
                       context,
                       alert: CustomAlertDialog(
-                        title: "Diluar Waktu Kerja",
+                        title: "Diluar Makan Siang",
                         description:
-                            "Lakukan absen masuk pada waktu yang ditentukan...",
+                            "Lakukan absen makan siang pada waktu yang ditentukan...",
                         imagePath: 'assets/images/out_worktime.png',
                       ),
                     );
-                  } else if (isFakeLocation) {
-                    setState(() {
-                      isClicked = false;
-                    });
-
+                  } else if (absentStatus == null) {
                     showAlert(
                       context,
                       alert: CustomAlertDialog(
-                        title: "Fake GPS Terdeteksi",
-                        description:
-                            "Hayoo... kamu menggunakan Fake GPS! Silahkan pakai GPS yang asli..",
-                        imagePath: 'assets/images/fake_gps.png',
-                      ),
-                    );
-                  } else if (!onOfficeRadius) {
-                    setState(() {
-                      isClicked = false;
-                    });
-
-                    showAlert(
-                      context,
-                      alert: CustomAlertDialog(
-                        title: "Belum Berada Di Kantor",
-                        description:
-                            "Pastikan kamu sudah berada di kantor jika ingin absensi..",
-                        imagePath: 'assets/images/radius_office.png',
+                        title: "Belum Absen Masuk",
+                        description: "Lakukan absen masuk terlebih dahulu ...",
+                        imagePath: 'assets/images/out_worktime.png',
                       ),
                     );
                   } else {
                     User user =
                         Provider.of<UserProvider>(context, listen: false).user;
+                    History history =
+                        Provider.of<HistoryProvider>(context, listen: false)
+                            .lastHistory;
 
-                    await setAbsentStatus("CHECK-IN");
+                    await setAbsentStatus("CHECK-MID");
 
                     Absent absentData = Absent(
                       userID: user.id,
                       userName: user.name,
                       userPhoto: user.photoURL,
                       absentTime: DateTime.now(),
-                      absentType: 'CHECK-IN',
+                      absentType: 'CHECK-MID',
                     );
 
-                    History historyData = History(
-                      userID: user.id,
-                      userName: user.name,
-                      userPhoto: user.photoURL,
-                      absentCheckIn: DateTime.now().millisecondsSinceEpoch,
+                    History historyData = history.copyWithMid(
+                      absentCheckMid: DateTime.now().millisecondsSinceEpoch,
                     );
 
                     await AbsentServices.storeAbsentCollection(absentData);
 
                     await AbsentServices.storeAbsentDatabase(absentData);
 
+                    // await AbsentServices.removeAbsentDatabase(user.id);
+
+                    // Provider.of<PresenceProvider>(context, listen: false)
+                    //     .updateTotal(user.id);
+
                     Provider.of<HistoryProvider>(context, listen: false)
-                        .storeHistory(historyData);
+                        .updateHistory(historyData);
 
                     Navigator.pushReplacementNamed(
                       context,
@@ -242,7 +226,7 @@ class _MethodCheckInComponentState extends State<_MethodCheckInComponent> {
                       arguments: RouteArgument(
                         success: Success(
                           title: "Absensi Berhasil",
-                          subtitle: "Berhasil melakukan absensi Check-In",
+                          subtitle: "Berhasil melakukan absensi Siang",
                           illustrationImage:
                               'assets/images/success_register.png',
                           nextRoute: MainScreen.routeName,
@@ -260,18 +244,26 @@ class _MethodCheckInComponentState extends State<_MethodCheckInComponent> {
                   String absentStatus = await getAbsentStatus();
                   String scanResult = await scanner.scan();
 
-                  if (absentStatus == "CHECK-IN" ||
-                      absentStatus == "CHECK-MID") {
+                  if (absentStatus == "CHECK-MID") {
                     showAlert(
                       context,
                       alert: CustomAlertDialog(
-                        title: "Sudah Absen Masuk",
+                        title: "Sudah Absen Siang",
                         description:
-                            "Kamu sudah melakukan absen masuk untuk hari ini...",
+                            "Kamu sudah melakukan absen siang sebelumnya...",
                         imagePath: 'assets/images/out_worktime.png',
                       ),
                     );
-                  } else if (scanResult != 'CHECK-IN') {
+                  } else if (absentStatus == null) {
+                    showAlert(
+                      context,
+                      alert: CustomAlertDialog(
+                        title: "Belum Absen Masuk",
+                        description: "Lakukan absen masuk terlebih dahulu ...",
+                        imagePath: 'assets/images/out_worktime.png',
+                      ),
+                    );
+                  } else if (scanResult != 'CHECK-MID') {
                     showAlert(
                       context,
                       alert: CustomAlertDialog(
@@ -290,30 +282,33 @@ class _MethodCheckInComponentState extends State<_MethodCheckInComponent> {
 
                     User user =
                         Provider.of<UserProvider>(context, listen: false).user;
+                    History history =
+                        Provider.of<HistoryProvider>(context, listen: false)
+                            .lastHistory;
 
-                    await setAbsentStatus("CHECK-IN");
+                    await setAbsentStatus("CHECK-MID");
 
                     Absent absentData = Absent(
                       userID: user.id,
                       userName: user.name,
                       userPhoto: user.photoURL,
                       absentTime: DateTime.now(),
-                      absentType: 'CHECK-IN',
+                      absentType: 'CHECK-MID',
                     );
 
-                    History historyData = History(
-                      userID: user.id,
-                      userName: user.name,
-                      userPhoto: user.photoURL,
-                      absentCheckIn: DateTime.now().millisecondsSinceEpoch,
+                    History historyData = history.copyWithMid(
+                      absentCheckMid: DateTime.now().millisecondsSinceEpoch,
                     );
 
                     await AbsentServices.storeAbsentCollection(absentData);
 
                     await AbsentServices.storeAbsentDatabase(absentData);
 
+                    // Provider.of<PresenceProvider>(context, listen: false)
+                    //     .updateTotal(user.id);
+
                     Provider.of<HistoryProvider>(context, listen: false)
-                        .storeHistory(historyData);
+                        .updateHistory(historyData);
 
                     Navigator.pushReplacementNamed(
                       context,
@@ -321,7 +316,7 @@ class _MethodCheckInComponentState extends State<_MethodCheckInComponent> {
                       arguments: RouteArgument(
                         success: Success(
                           title: "Absensi Berhasil",
-                          subtitle: "Berhasil melakukan absensi Check-In",
+                          subtitle: "Berhasil melakukan absensi Siang",
                           illustrationImage:
                               'assets/images/success_register.png',
                           nextRoute: MainScreen.routeName,
@@ -338,57 +333,7 @@ class _MethodCheckInComponentState extends State<_MethodCheckInComponent> {
   }
 }
 
-class _MethodComponent extends StatelessWidget {
-  final String methodName;
-  final String iconPath;
-  final Function onTap;
-
-  _MethodComponent({this.methodName, this.iconPath, this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: deviceWidth(context) / 2 - 1.5 * defaultMargin,
-      height: 187,
-      child: RaisedButton(
-        onPressed: onTap,
-        color: primaryColor,
-        elevation: 0,
-        hoverElevation: 0,
-        focusElevation: 0,
-        highlightElevation: 0,
-        splashColor: Colors.black.withOpacity(0.3),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 90,
-              height: 90,
-              margin: EdgeInsets.only(bottom: 18),
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(
-                    iconPath,
-                  ),
-                ),
-              ),
-            ),
-            Text(
-              methodName,
-              style: boldWhiteFont.copyWith(fontSize: 16),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _ActivityCheckInComponent extends StatelessWidget {
+class _ActivityCheckMidComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -460,7 +405,7 @@ class _ActivityCheckInComponent extends StatelessWidget {
                   physics: NeverScrollableScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   itemCount: items.length,
-                  itemBuilder: (context, index) => _UserCheckInComponent(
+                  itemBuilder: (context, index) => _UserCheckMidComponent(
                     userName: items[index]['userName'],
                     absentTime: items[index]['absentTime'],
                     photoURL: items[index]['userPhoto'],
@@ -483,12 +428,12 @@ class _ActivityCheckInComponent extends StatelessWidget {
   }
 }
 
-class _UserCheckInComponent extends StatelessWidget {
+class _UserCheckMidComponent extends StatelessWidget {
   final String userName;
   final int absentTime;
   final String photoURL;
 
-  _UserCheckInComponent({this.userName, this.absentTime, this.photoURL});
+  _UserCheckMidComponent({this.userName, this.absentTime, this.photoURL});
 
   @override
   Widget build(BuildContext context) {
@@ -558,7 +503,7 @@ class _UserCheckInComponent extends StatelessWidget {
                   Container(
                     width: 42,
                     height: 14,
-                    margin: EdgeInsets.only(right: 8),
+                    margin: EdgeInsets.only(right: 10),
                     decoration: BoxDecoration(
                       color: primaryColor,
                       borderRadius: BorderRadius.circular(2),
