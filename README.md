@@ -8,7 +8,7 @@
 GoAbsensi adalah aplikasi presensi yang digunakan siswa / karyawan untuk melakukan absensi harian secara digital. Terdapat beberapa keamanan yang memperkuat akurasi data sehingga pengguna tidak bisa melakukan tindakan kecurangan.
 
 ## Demo
-Get GoAbsensi on PlayStore <a href="https://play.google.com/store/apps/details?id=com.abuaziz.go_absensi">https://play.google.com/store/apps/details?id=com.abuaziz.go_absensi</a>
+Get GoAbsensi on PlayStore <a href="https://play.google.com/store/apps/details?id=ipb.pplh.presensi">https://play.google.com/store/apps/details?id=ipb.pplh.presensi</a>
 
 <p><img  src="https://i.ibb.co/C8L3HSv/Go-Absensi-Feature-Graphic.png"/></p>
 

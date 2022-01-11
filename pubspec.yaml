@@ -50,7 +50,7 @@ dependencies:
   file_picker: ^2.0.0
   url_launcher: ^5.6.0
   firebase_analytics: ^6.0.0
-  onesignal_flutter: ^2.6.1
+  onesignal_flutter: ^3.0.0
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,4 @@
-package com.abuaziz.go_absensi
+package ipb.pplh.presensi
 
 import io.flutter.embedding.android.FlutterActivity
 

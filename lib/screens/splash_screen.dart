@@ -9,7 +9,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   @override
-  void initState() { 
+  void initState() {
     super.initState();
     splashTimer(context);
   }
@@ -41,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ),
             Text(
-              "GoAbsensi",
+              "Presensi PPLH",
               style: extraWhiteFont.copyWith(fontSize: 28),
             ),
           ],

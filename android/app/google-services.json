@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "507157517673",
-    "firebase_url": "https://goabsensi-c2366.firebaseio.com",
-    "project_id": "goabsensi-c2366",
-    "storage_bucket": "goabsensi-c2366.appspot.com"
+    "project_number": "115129152943",
+    "firebase_url": "https://presensi-pplh-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "presensi-pplh",
+    "storage_bucket": "presensi-pplh.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:507157517673:android:f83fa08aef59840ad199f8",
+        "mobilesdk_app_id": "1:115129152943:android:f1917e4fd222aed191eb5a",
         "android_client_info": {
-          "package_name": "com.abuaziz.go_absensi"
+          "package_name": "ipb.pplh.presensi"
         }
       },
       "oauth_client": [
         {
-          "client_id": "507157517673-ifgr2n97moiqclenlrb3di94fcn1t6qn.apps.googleusercontent.com",
+          "client_id": "115129152943-5plrshfb4t2bmomkkkjhlu5qa4eu3h0k.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDTYdJjuXHl-p1yEjluuGUms99Ak_AEiJQ"
+          "current_key": "AIzaSyA7Jcex05QV26_OGVkkxjFLpw6Y08L7LD8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "507157517673-ifgr2n97moiqclenlrb3di94fcn1t6qn.apps.googleusercontent.com",
+              "client_id": "115129152943-5plrshfb4t2bmomkkkjhlu5qa4eu3h0k.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

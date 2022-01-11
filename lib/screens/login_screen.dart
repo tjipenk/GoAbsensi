@@ -18,8 +18,10 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
 
-    final isValidEmail = Provider.of<ValidationProvider>(context).errorEmail == "";
-    final isValidPassword = Provider.of<ValidationProvider>(context).errorPassword == "";
+    final isValidEmail =
+        Provider.of<ValidationProvider>(context).errorEmail == "";
+    final isValidPassword =
+        Provider.of<ValidationProvider>(context).errorPassword == "";
 
     return WillPopScope(
       onWillPop: () async {
@@ -50,7 +52,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             margin: EdgeInsets.only(right: 14),
                             decoration: BoxDecoration(
                               image: DecorationImage(
-                                image: AssetImage("assets/images/primary_logo.png"),
+                                image: AssetImage(
+                                    "assets/images/primary_logo.png"),
                               ),
                             ),
                           ),
@@ -58,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "GoAbsensi",
+                                "Presensi PPLH",
                                 style: boldBlackFont.copyWith(fontSize: 24),
                               ),
                               Text(
@@ -95,73 +98,86 @@ class _LoginScreenState extends State<LoginScreen> {
                           validation.changePassword(text);
                         },
                         suffixIcon: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              isHidePassword = !isHidePassword;
-                            });
-                          },
-                          child: Theme(
-                            data: Theme.of(context).copyWith(primaryColor: null),
-                            child: (!isHidePassword) ? Icon(
-                              Icons.visibility_off,
-                              size: 20,
-                              color: Color(0xFFC6C6C6),
-                            ) : Icon(
-                              Icons.visibility,
-                              size: 20,
-                              color: Color(0xFFC6C6C6),
-                            ),
-                          )
-                        ),
+                            onTap: () {
+                              setState(() {
+                                isHidePassword = !isHidePassword;
+                              });
+                            },
+                            child: Theme(
+                              data: Theme.of(context)
+                                  .copyWith(primaryColor: null),
+                              child: (!isHidePassword)
+                                  ? Icon(
+                                      Icons.visibility_off,
+                                      size: 20,
+                                      color: Color(0xFFC6C6C6),
+                                    )
+                                  : Icon(
+                                      Icons.visibility,
+                                      size: 20,
+                                      color: Color(0xFFC6C6C6),
+                                    ),
+                            )),
                       ),
                       SizedBox(
                         height: 30,
                       ),
-                      if (isLogining) SpinKitWave(
-                        color: primaryColor,
-                        size: 50,
-                      )
-                      else CustomRaisedButton(
-                        "Login",
-                        textColor: whiteColor,
-                        color: (isValidEmail && isValidPassword) ? primaryColor : Color(0xFFCDCBCB),
-                        onPressed: (isValidEmail && isValidPassword) ? () async {
-                          
-                          /// Set isLogining be 'true' to show loading wave
-                          setState(() {
-                            isLogining = true;
-                          });
+                      if (isLogining)
+                        SpinKitWave(
+                          color: primaryColor,
+                          size: 50,
+                        )
+                      else
+                        CustomRaisedButton(
+                          "Login",
+                          textColor: whiteColor,
+                          color: (isValidEmail && isValidPassword)
+                              ? primaryColor
+                              : Color(0xFFCDCBCB),
+                          onPressed: (isValidEmail && isValidPassword)
+                              ? () async {
+                                  /// Set isLogining be 'true' to show loading wave
+                                  setState(() {
+                                    isLogining = true;
+                                  });
 
-                          /// Call auth services to check auth data
-                          ResponseHandler result = await AuthServices.logIn(
-                            Auth(
-                              email: emailController.text,
-                              password: passwordController.text,
-                            ),
-                          );
+                                  /// Call auth services to check auth data
+                                  ResponseHandler result =
+                                      await AuthServices.logIn(
+                                    Auth(
+                                      email: emailController.text,
+                                      password: passwordController.text,
+                                    ),
+                                  );
 
-                          /// Checking if user failed or success to check 
-                          /// (it will receive response message if failed)
-                          if (result.user == null) {
-                            setState(() {
-                              isLogining = false;
-                            });
+                                  /// Checking if user failed or success to check
+                                  /// (it will receive response message if failed)
+                                  if (result.user == null) {
+                                    setState(() {
+                                      isLogining = false;
+                                    });
 
-                            showAlert(
-                              context,
-                              alert: CustomAlertDialog(
-                                title: generateAuthMessage(result.message).title,
-                                description: generateAuthMessage(result.message).message,
-                                imagePath: generateAuthMessage(result.message).illustration,
-                              ),
-                            );
-                          } else {
-                            /// Reset validation state
-                            validation.resetChange();
-                          }
-                          
-                        } : null,
-                      ),
+                                    showAlert(
+                                      context,
+                                      alert: CustomAlertDialog(
+                                        title:
+                                            generateAuthMessage(result.message)
+                                                .title,
+                                        description:
+                                            generateAuthMessage(result.message)
+                                                .message,
+                                        imagePath:
+                                            generateAuthMessage(result.message)
+                                                .illustration,
+                                      ),
+                                    );
+                                  } else {
+                                    /// Reset validation state
+                                    validation.resetChange();
+                                  }
+                                }
+                              : null,
+                        ),
                       SizedBox(
                         height: 110,
                       ),
@@ -180,7 +196,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               onTap: () {
                                 validation.resetChange();
-                                Navigator.pushNamed(context, RegisterScreen.routeName, 
+                                Navigator.pushNamed(
+                                  context,
+                                  RegisterScreen.routeName,
                                   arguments: RouteArgument(auth: Auth()),
                                 );
                               },
@@ -205,15 +223,23 @@ class _LoginScreenState extends State<LoginScreen> {
                                     msg: "Masukan Email Anda Terlebih Dahulu",
                                   );
                                 } else {
-                                  ResponseHandler result = await AuthServices.resetPassword(emailController.text);
+                                  ResponseHandler result =
+                                      await AuthServices.resetPassword(
+                                          emailController.text);
 
                                   if (result.message != null) {
                                     showAlert(
                                       context,
                                       alert: CustomAlertDialog(
-                                        title: generateAuthMessage(result.message).title,
-                                        description: generateAuthMessage(result.message).message,
-                                        imagePath: generateAuthMessage(result.message).illustration,
+                                        title:
+                                            generateAuthMessage(result.message)
+                                                .title,
+                                        description:
+                                            generateAuthMessage(result.message)
+                                                .message,
+                                        imagePath:
+                                            generateAuthMessage(result.message)
+                                                .illustration,
                                       ),
                                     );
                                   } else {

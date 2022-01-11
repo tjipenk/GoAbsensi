@@ -13,8 +13,10 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  OneSignal.shared.init(oneSignalAppID, iOSSettings: null);
-  OneSignal.shared.setInFocusDisplayType(OSNotificationDisplayType.notification);
+  OneSignal.shared.setAppId(oneSignalAppID);
+  // OneSignal.shared.init(oneSignalAppID, iOSSettings: null);
+  // OneSignal.shared
+  //     .setInFocusDisplayType(OSNotificationDisplayType.notification);
   runApp(MyApp());
 }
 
@@ -32,7 +34,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (_) => HistoryProvider()),
         ],
         child: MaterialApp(
-          title: "GoAbsensi",
+          title: "Presensi PPLH",
           home: SplashScreen(),
           theme: appTheme,
           routes: appRoute,
