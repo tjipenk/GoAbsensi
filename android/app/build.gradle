@@ -32,7 +32,7 @@ if (flutterVersionCode == null) {
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
-    flutterVersionName = '1.0'
+    flutterVersionName = '1.1'
 }
 
 apply plugin: 'com.android.application'
@@ -47,6 +47,7 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     compileSdkVersion 29
+    buildToolsVersion '29.0.3'
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -76,7 +77,13 @@ android {
     
     buildTypes {
         release {
+            profile {
+                matchingFallbacks = ['debug', 'release']
+            }
             signingConfig signingConfigs.release
+            shrinkResources false
+            minifyEnabled false
+
         }
     }
 }
