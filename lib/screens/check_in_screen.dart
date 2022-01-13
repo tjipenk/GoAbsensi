@@ -214,12 +214,16 @@ class _MethodCheckInComponentState extends State<_MethodCheckInComponent> {
 
                     await setAbsentStatus("CHECK-IN");
 
+                    /// Get current device position data (GPS required)
+                    List<String> coordinate = await getPosition();
+
                     Absent absentData = Absent(
                       userID: user.id,
                       userName: user.name,
                       userPhoto: user.photoURL,
                       absentTime: DateTime.now(),
                       absentType: 'CHECK-IN',
+                      coordinate: coordinate,
                     );
 
                     History historyData = History(

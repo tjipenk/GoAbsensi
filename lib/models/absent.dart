@@ -6,6 +6,7 @@ class Absent extends Equatable {
   final String userPhoto;
   final DateTime absentTime;
   final String absentType;
+  final List<String> coordinate;
 
   Absent({
     @required this.userID,
@@ -13,8 +14,10 @@ class Absent extends Equatable {
     @required this.userPhoto,
     @required this.absentTime,
     @required this.absentType,
+    @required this.coordinate,
   });
 
   @override
-  List<Object> get props => [userID, userName, userPhoto, absentTime, absentType];
+  List<Object> get props =>
+      [userID, userName, userPhoto, absentTime, absentType, coordinate];
 }
