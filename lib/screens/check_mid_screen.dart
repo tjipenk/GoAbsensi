@@ -292,12 +292,16 @@ class __MethodCheckMidComponentState extends State<_MethodCheckMidComponent> {
 
                     await setAbsentStatus("CHECK-MID");
 
+                    /// Get current device position data (GPS required)
+                    List<String> coordinate = await getPosition();
+
                     Absent absentData = Absent(
                       userID: user.id,
                       userName: user.name,
                       userPhoto: user.photoURL,
                       absentTime: DateTime.now(),
                       absentType: 'CHECK-MID',
+                      coordinate: coordinate,
                     );
 
                     History historyData = history.copyWithMid(

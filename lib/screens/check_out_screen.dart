@@ -290,12 +290,16 @@ class __MethodCheckOutComponentState extends State<_MethodCheckOutComponent> {
 
                     await setAbsentStatus("CHECK-OUT");
 
+                    /// Get current device position data (GPS required)
+                    List<String> coordinate = await getPosition();
+
                     Absent absentData = Absent(
                       userID: user.id,
                       userName: user.name,
                       userPhoto: user.photoURL,
                       absentTime: DateTime.now(),
                       absentType: 'CHECK-OUT',
+                      coordinate: coordinate,
                     );
 
                     History historyData = history.copyWith(
