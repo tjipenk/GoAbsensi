@@ -119,7 +119,7 @@ class _MethodCheckInComponentState extends State<_MethodCheckInComponent> {
         Padding(
           padding: const EdgeInsets.only(left: defaultMargin),
           child: Text(
-            "Pilih Metode Absen",
+            "Pilih Jenis Absen",
             style: semiBlackFont.copyWith(fontSize: 14),
           ),
         ),
@@ -139,8 +139,8 @@ class _MethodCheckInComponentState extends State<_MethodCheckInComponent> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _MethodComponent(
-                methodName: "One Click",
-                iconPath: 'assets/images/one_click.png',
+                methodName: "Kantor",
+                iconPath: 'assets/images/WFO.png',
                 onTap: () async {
                   setState(() {
                     isClicked = true;
@@ -214,8 +214,11 @@ class _MethodCheckInComponentState extends State<_MethodCheckInComponent> {
 
                     await setAbsentStatus("CHECK-IN");
 
+                    await setAbsentJenis("WFO");
+
                     /// Get current device position data (GPS required)
                     List<String> coordinate = await getPosition();
+                    String absentJenis = await getAbsentJenis();
 
                     Absent absentData = Absent(
                       userID: user.id,
@@ -224,6 +227,7 @@ class _MethodCheckInComponentState extends State<_MethodCheckInComponent> {
                       absentTime: DateTime.now(),
                       absentType: 'CHECK-IN',
                       coordinate: coordinate,
+                      jenis: absentJenis,
                     );
 
                     History historyData = History(
@@ -258,14 +262,24 @@ class _MethodCheckInComponentState extends State<_MethodCheckInComponent> {
               ),
               SizedBox(width: defaultMargin),
               _MethodComponent(
-                methodName: "Scan QR",
-                iconPath: 'assets/images/scan_qr.png',
+                methodName: "Rumah",
+                iconPath: 'assets/images/WFH.png',
                 onTap: () async {
+                  setState(() {
+                    isClicked = true;
+                  });
+
+                  bool isWorkTime = await isCheckInTime();
+                  bool isFakeLocation = await isFakeGPS();
+                  bool onOfficeRadius = await onRadiusDistance();
                   String absentStatus = await getAbsentStatus();
-                  String scanResult = await scanner.scan();
 
                   if (absentStatus == "CHECK-IN" ||
                       absentStatus == "CHECK-MID") {
+                    setState(() {
+                      isClicked = false;
+                    });
+
                     showAlert(
                       context,
                       alert: CustomAlertDialog(
@@ -275,30 +289,59 @@ class _MethodCheckInComponentState extends State<_MethodCheckInComponent> {
                         imagePath: 'assets/images/out_worktime.png',
                       ),
                     );
-                  } else if (scanResult != 'CHECK-IN') {
+                  } else if (!isWorkTime) {
+                    setState(() {
+                      isClicked = false;
+                    });
+
                     showAlert(
                       context,
                       alert: CustomAlertDialog(
-                        title: "Barcode Tidak Valid",
+                        title: "Diluar Waktu Kerja",
                         description:
-                            "Lakukan scanning pada barcode bar di kantor kamu...",
-                        imagePath: 'assets/images/access_denied.png',
+                            "Lakukan absen masuk pada waktu yang ditentukan...",
+                        imagePath: 'assets/images/out_worktime.png',
+                      ),
+                    );
+                  } else if (isFakeLocation) {
+                    setState(() {
+                      isClicked = false;
+                    });
+
+                    showAlert(
+                      context,
+                      alert: CustomAlertDialog(
+                        title: "Fake GPS Terdeteksi",
+                        description:
+                            "Hayoo... kamu menggunakan Fake GPS! Silahkan pakai GPS yang asli..",
+                        imagePath: 'assets/images/fake_gps.png',
+                      ),
+                    );
+                  } else if (!onOfficeRadius) {
+                    setState(() {
+                      isClicked = false;
+                    });
+
+                    showAlert(
+                      context,
+                      alert: CustomAlertDialog(
+                        title: "Belum Berada Di Kantor",
+                        description:
+                            "Pastikan kamu sudah berada di kantor jika ingin absensi..",
+                        imagePath: 'assets/images/radius_office.png',
                       ),
                     );
                   } else {
-                    if (scanResult != null) {
-                      setState(() {
-                        isClicked = true;
-                      });
-                    }
-
                     User user =
                         Provider.of<UserProvider>(context, listen: false).user;
 
                     await setAbsentStatus("CHECK-IN");
 
+                    await setAbsentJenis("WFH");
+
                     /// Get current device position data (GPS required)
                     List<String> coordinate = await getPosition();
+                    String absentJenis = await getAbsentJenis();
 
                     Absent absentData = Absent(
                       userID: user.id,
@@ -307,6 +350,130 @@ class _MethodCheckInComponentState extends State<_MethodCheckInComponent> {
                       absentTime: DateTime.now(),
                       absentType: 'CHECK-IN',
                       coordinate: coordinate,
+                      jenis: absentJenis,
+                    );
+
+                    History historyData = History(
+                      userID: user.id,
+                      userName: user.name,
+                      userPhoto: user.photoURL,
+                      absentCheckIn: DateTime.now().millisecondsSinceEpoch,
+                    );
+
+                    await AbsentServices.storeAbsentCollection(absentData);
+
+                    await AbsentServices.storeAbsentDatabase(absentData);
+
+                    Provider.of<HistoryProvider>(context, listen: false)
+                        .storeHistory(historyData);
+
+                    Navigator.pushReplacementNamed(
+                      context,
+                      SuccessScreen.routeName,
+                      arguments: RouteArgument(
+                        success: Success(
+                          title: "Absensi Berhasil",
+                          subtitle: "Berhasil melakukan absensi Check-In",
+                          illustrationImage:
+                              'assets/images/success_register.png',
+                          nextRoute: MainScreen.routeName,
+                        ),
+                      ),
+                    );
+                  }
+                },
+              ),
+              SizedBox(width: defaultMargin),
+              _MethodComponent(
+                methodName: "Survei",
+                iconPath: 'assets/images/Survei.png',
+                onTap: () async {
+                  setState(() {
+                    isClicked = true;
+                  });
+
+                  bool isWorkTime = await isCheckInTime();
+                  bool isFakeLocation = await isFakeGPS();
+                  bool onOfficeRadius = await onRadiusDistance();
+                  String absentStatus = await getAbsentStatus();
+
+                  if (absentStatus == "CHECK-IN" ||
+                      absentStatus == "CHECK-MID") {
+                    setState(() {
+                      isClicked = false;
+                    });
+
+                    showAlert(
+                      context,
+                      alert: CustomAlertDialog(
+                        title: "Sudah Absen Masuk",
+                        description:
+                            "Kamu sudah melakukan absen masuk untuk hari ini...",
+                        imagePath: 'assets/images/out_worktime.png',
+                      ),
+                    );
+                  } else if (!isWorkTime) {
+                    setState(() {
+                      isClicked = false;
+                    });
+
+                    showAlert(
+                      context,
+                      alert: CustomAlertDialog(
+                        title: "Diluar Waktu Kerja",
+                        description:
+                            "Lakukan absen masuk pada waktu yang ditentukan...",
+                        imagePath: 'assets/images/out_worktime.png',
+                      ),
+                    );
+                  } else if (isFakeLocation) {
+                    setState(() {
+                      isClicked = false;
+                    });
+
+                    showAlert(
+                      context,
+                      alert: CustomAlertDialog(
+                        title: "Fake GPS Terdeteksi",
+                        description:
+                            "Hayoo... kamu menggunakan Fake GPS! Silahkan pakai GPS yang asli..",
+                        imagePath: 'assets/images/fake_gps.png',
+                      ),
+                    );
+                  } else if (!onOfficeRadius) {
+                    setState(() {
+                      isClicked = false;
+                    });
+
+                    showAlert(
+                      context,
+                      alert: CustomAlertDialog(
+                        title: "Belum Berada Di Kantor",
+                        description:
+                            "Pastikan kamu sudah berada di kantor jika ingin absensi..",
+                        imagePath: 'assets/images/radius_office.png',
+                      ),
+                    );
+                  } else {
+                    User user =
+                        Provider.of<UserProvider>(context, listen: false).user;
+
+                    await setAbsentStatus("CHECK-IN");
+
+                    await setAbsentJenis("SURVEI");
+
+                    /// Get current device position data (GPS required)
+                    List<String> coordinate = await getPosition();
+                    String absentJenis = await getAbsentJenis();
+
+                    Absent absentData = Absent(
+                      userID: user.id,
+                      userName: user.name,
+                      userPhoto: user.photoURL,
+                      absentTime: DateTime.now(),
+                      absentType: 'CHECK-IN',
+                      coordinate: coordinate,
+                      jenis: absentJenis,
                     );
 
                     History historyData = History(
@@ -356,8 +523,8 @@ class _MethodComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: deviceWidth(context) / 2 - 1.5 * defaultMargin,
-      height: 187,
+      width: deviceWidth(context) / 3 - 1.5 * defaultMargin,
+      height: 135,
       child: RaisedButton(
         onPressed: onTap,
         color: primaryColor,

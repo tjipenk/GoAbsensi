@@ -148,6 +148,7 @@ class __MethodCheckOutComponentState extends State<_MethodCheckOutComponent> {
                   });
 
                   String absentStatus = await getAbsentStatus();
+                  String absentJenis = await getAbsentJenis();
                   bool isAwayTime = await isCheckOutTime();
 
                   if (absentStatus == "CHECK-OUT") {
@@ -206,6 +207,7 @@ class __MethodCheckOutComponentState extends State<_MethodCheckOutComponent> {
                       absentTime: DateTime.now(),
                       absentType: 'CHECK-OUT',
                       coordinate: coordinate,
+                      jenis: absentJenis,
                     );
 
                     History historyData = history.copyWith(
@@ -244,6 +246,7 @@ class __MethodCheckOutComponentState extends State<_MethodCheckOutComponent> {
                 iconPath: 'assets/images/scan_qr.png',
                 onTap: () async {
                   String absentStatus = await getAbsentStatus();
+                  String absentJenis = await getAbsentJenis();
                   String scanResult = await scanner.scan();
 
                   if (absentStatus == "CHECK-OUT") {
@@ -300,6 +303,7 @@ class __MethodCheckOutComponentState extends State<_MethodCheckOutComponent> {
                       absentTime: DateTime.now(),
                       absentType: 'CHECK-OUT',
                       coordinate: coordinate,
+                      jenis: absentJenis,
                     );
 
                     History historyData = history.copyWith(

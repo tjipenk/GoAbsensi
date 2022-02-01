@@ -357,7 +357,7 @@ class _MenuActivityComponent extends StatelessWidget {
             ),
             _MenuComponent(
               titleMenu: "Makan Siang",
-              iconPath: 'assets/images/ic_absen_masuk.png',
+              iconPath: 'assets/images/ic_makan.png',
               onTap: () {
                 Navigator.pushNamed(context, CheckMidScreen.routeName);
               },

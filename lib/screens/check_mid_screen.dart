@@ -148,6 +148,7 @@ class __MethodCheckMidComponentState extends State<_MethodCheckMidComponent> {
                   });
 
                   String absentStatus = await getAbsentStatus();
+                  String absentJenis = await getAbsentJenis();
                   bool isAwayTime = await isCheckOutTime();
 
                   if (absentStatus == "CHECK-MID") {
@@ -206,6 +207,7 @@ class __MethodCheckMidComponentState extends State<_MethodCheckMidComponent> {
                       absentTime: DateTime.now(),
                       absentType: 'CHECK-MID',
                       coordinate: coordinate,
+                      jenis: absentJenis,
                     );
 
                     History historyData = history.copyWithMid(
@@ -246,6 +248,8 @@ class __MethodCheckMidComponentState extends State<_MethodCheckMidComponent> {
                 iconPath: 'assets/images/scan_qr.png',
                 onTap: () async {
                   String absentStatus = await getAbsentStatus();
+                  String absentJenis = await getAbsentJenis();
+
                   String scanResult = await scanner.scan();
 
                   if (absentStatus == "CHECK-MID") {
@@ -302,6 +306,7 @@ class __MethodCheckMidComponentState extends State<_MethodCheckMidComponent> {
                       absentTime: DateTime.now(),
                       absentType: 'CHECK-MID',
                       coordinate: coordinate,
+                      jenis: absentJenis,
                     );
 
                     History historyData = history.copyWithMid(
