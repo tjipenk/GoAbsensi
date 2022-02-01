@@ -19,11 +19,11 @@ Future<bool> onRadiusDistance() async {
   Position position =
       await getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
-  double startLatPoint = -6.5220;
-  double startLongPoint = 106.6268;
+  double startLatPoint = -6.541914;
+  double startLongPoint = 106.709242;
 
-  double endLatPoint = -6.5962;
-  double endLongPoint = 106.8252;
+  double endLatPoint = -6.564264;
+  double endLongPoint = 106.737321;
 
   bool onLatRadius =
       position.latitude <= startLatPoint && position.latitude >= endLatPoint;

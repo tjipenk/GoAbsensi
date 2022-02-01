@@ -419,7 +419,8 @@ class _ActivityCheckMidComponent extends StatelessWidget {
                   scrollDirection: Axis.vertical,
                   itemCount: items.length,
                   itemBuilder: (context, index) => _UserCheckMidComponent(
-                    userName: items[index]['userName'],
+                    userName:
+                        items[index]['jenis'] + '- ' + items[index]['userName'],
                     absentTime: items[index]['absentTime'],
                     photoURL: items[index]['userPhoto'],
                   ),

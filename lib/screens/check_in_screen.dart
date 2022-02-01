@@ -271,7 +271,7 @@ class _MethodCheckInComponentState extends State<_MethodCheckInComponent> {
 
                   bool isWorkTime = await isCheckInTime();
                   bool isFakeLocation = await isFakeGPS();
-                  bool onOfficeRadius = await onRadiusDistance();
+                  bool onOfficeRadius = true;
                   String absentStatus = await getAbsentStatus();
 
                   if (absentStatus == "CHECK-IN" ||
@@ -394,7 +394,7 @@ class _MethodCheckInComponentState extends State<_MethodCheckInComponent> {
 
                   bool isWorkTime = await isCheckInTime();
                   bool isFakeLocation = await isFakeGPS();
-                  bool onOfficeRadius = await onRadiusDistance();
+                  bool onOfficeRadius = true;
                   String absentStatus = await getAbsentStatus();
 
                   if (absentStatus == "CHECK-IN" ||
@@ -636,7 +636,8 @@ class _ActivityCheckInComponent extends StatelessWidget {
                   scrollDirection: Axis.vertical,
                   itemCount: items.length,
                   itemBuilder: (context, index) => _UserCheckInComponent(
-                    userName: items[index]['userName'],
+                    userName:
+                        items[index]['jenis'] + '- ' + items[index]['userName'],
                     absentTime: items[index]['absentTime'],
                     photoURL: items[index]['userPhoto'],
                   ),

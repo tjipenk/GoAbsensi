@@ -416,7 +416,8 @@ class _ActivityCheckOutComponent extends StatelessWidget {
                   scrollDirection: Axis.vertical,
                   itemCount: items.length,
                   itemBuilder: (context, index) => _UserCheckOutComponent(
-                    userName: items[index]['userName'],
+                    userName:
+                        items[index]['jenis'] + '- ' + items[index]['userName'],
                     absentTime: items[index]['absentTime'],
                     photoURL: items[index]['userPhoto'],
                   ),
