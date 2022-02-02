@@ -523,8 +523,8 @@ class _MethodComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: deviceWidth(context) / 3 - 1.5 * defaultMargin,
-      height: 135,
+      width: deviceWidth(context) / 3 - 1 * defaultMargin,
+      height: 180,
       child: RaisedButton(
         onPressed: onTap,
         color: primaryColor,

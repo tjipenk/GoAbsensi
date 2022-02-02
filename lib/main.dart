@@ -2,12 +2,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
-import 'package:Presensi_PPLH/services/services.dart';
+import 'package:presensi_pplh/services/services.dart';
 import 'package:provider/provider.dart';
-import 'package:Presensi_PPLH/common/common.dart';
-import 'package:Presensi_PPLH/screens/screens.dart';
-import 'package:Presensi_PPLH/utils/utils.dart';
-import 'package:Presensi_PPLH/provider/provider.dart';
+import 'package:presensi_pplh/common/common.dart';
+import 'package:presensi_pplh/screens/screens.dart';
+import 'package:presensi_pplh/utils/utils.dart';
+import 'package:presensi_pplh/provider/provider.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 void main() async {

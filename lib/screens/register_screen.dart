@@ -93,8 +93,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         height: 40,
                       ),
                       CustomTextField(
-                        labelText: "NIDK",
-                        hintText: "Masukan NIDK",
+                        labelText: "NIK",
+                        hintText: "Masukan No KTP",
                         keyboardType: TextInputType.number,
                         controller: nidkController,
                         errorValidation: validation.errorNIDK,
