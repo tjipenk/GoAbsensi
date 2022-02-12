@@ -239,8 +239,8 @@ class __MethodCheckMidComponentState extends State<_MethodCheckMidComponent> {
                     // Provider.of<PresenceProvider>(context, listen: false)
                     //     .updateTotal(user.id);
 
-                    Provider.of<HistoryProvider>(context, listen: false)
-                        .updateHistory(historyData);
+                    //Provider.of<HistoryProvider>(context, listen: false)
+                    //    .updateHistory(historyData);
 
                     Navigator.pushReplacementNamed(
                       context,
@@ -336,8 +336,8 @@ class __MethodCheckMidComponentState extends State<_MethodCheckMidComponent> {
                     // Provider.of<PresenceProvider>(context, listen: false)
                     //     .updateTotal(user.id);
 
-                    Provider.of<HistoryProvider>(context, listen: false)
-                        .updateHistory(historyData);
+                    //Provider.of<HistoryProvider>(context, listen: false)
+                    //    .updateHistory(historyData);
 
                     Navigator.pushReplacementNamed(
                       context,
