@@ -18,7 +18,7 @@ class HistoryProvider extends ChangeNotifier {
     _histories = _histories + [history];
 
     await HistoryServices.storeHistory(history);
-    
+
     notifyListeners();
   }
 

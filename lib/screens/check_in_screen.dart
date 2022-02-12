@@ -215,6 +215,8 @@ class _MethodCheckInComponentState extends State<_MethodCheckInComponent> {
                     await setAbsentStatus("CHECK-IN");
 
                     await setAbsentJenis("WFO");
+                    await setTimeIN(
+                        DateTime.now().millisecondsSinceEpoch.toString());
 
                     /// Get current device position data (GPS required)
                     List<String> coordinate = await getPosition();
@@ -234,6 +236,7 @@ class _MethodCheckInComponentState extends State<_MethodCheckInComponent> {
                       userID: user.id,
                       userName: user.name,
                       userPhoto: user.photoURL,
+                      jenisAbsen: absentJenis,
                       absentCheckIn: DateTime.now().millisecondsSinceEpoch,
                     );
 
@@ -338,6 +341,8 @@ class _MethodCheckInComponentState extends State<_MethodCheckInComponent> {
                     await setAbsentStatus("CHECK-IN");
 
                     await setAbsentJenis("WFH");
+                    await setTimeIN(
+                        DateTime.now().millisecondsSinceEpoch.toString());
 
                     /// Get current device position data (GPS required)
                     List<String> coordinate = await getPosition();
@@ -357,6 +362,7 @@ class _MethodCheckInComponentState extends State<_MethodCheckInComponent> {
                       userID: user.id,
                       userName: user.name,
                       userPhoto: user.photoURL,
+                      jenisAbsen: absentJenis,
                       absentCheckIn: DateTime.now().millisecondsSinceEpoch,
                     );
 
@@ -461,6 +467,8 @@ class _MethodCheckInComponentState extends State<_MethodCheckInComponent> {
                     await setAbsentStatus("CHECK-IN");
 
                     await setAbsentJenis("SURVEI");
+                    await setTimeIN(
+                        DateTime.now().millisecondsSinceEpoch.toString());
 
                     /// Get current device position data (GPS required)
                     List<String> coordinate = await getPosition();
@@ -480,6 +488,7 @@ class _MethodCheckInComponentState extends State<_MethodCheckInComponent> {
                       userID: user.id,
                       userName: user.name,
                       userPhoto: user.photoURL,
+                      jenisAbsen: absentJenis,
                       absentCheckIn: DateTime.now().millisecondsSinceEpoch,
                     );
 

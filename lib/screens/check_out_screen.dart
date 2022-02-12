@@ -196,6 +196,12 @@ class __MethodCheckOutComponentState extends State<_MethodCheckOutComponent> {
                             .lastHistory;
 
                     await setAbsentStatus("CHECK-OUT");
+                    await setTimeOUT(
+                        DateTime.now().millisecondsSinceEpoch.toString());
+
+                    // Get CheckIN and CheckMID Time
+                    String timeIN = await getTimeIN();
+                    //String timeMID = await getTimeMID();
 
                     /// Get current device position data (GPS required)
                     List<String> coordinate = await getPosition();
@@ -210,7 +216,15 @@ class __MethodCheckOutComponentState extends State<_MethodCheckOutComponent> {
                       jenis: absentJenis,
                     );
 
-                    History historyData = history.copyWith(
+                    //History historyData = history.copyWith(
+                    //  absentCheckOut: DateTime.now().millisecondsSinceEpoch,
+                    //);
+                    History historyData = History(
+                      userID: user.id,
+                      userName: user.name,
+                      userPhoto: user.photoURL,
+                      jenisAbsen: absentJenis,
+                      absentCheckIn: int.parse(timeIN),
                       absentCheckOut: DateTime.now().millisecondsSinceEpoch,
                     );
 
@@ -292,6 +306,12 @@ class __MethodCheckOutComponentState extends State<_MethodCheckOutComponent> {
                             .lastHistory;
 
                     await setAbsentStatus("CHECK-OUT");
+                    await setTimeOUT(
+                        DateTime.now().millisecondsSinceEpoch.toString());
+
+                    // Get CheckIN and CheckMID Time
+                    String timeIN = await getTimeIN();
+                    String timeMID = await getTimeMID();
 
                     /// Get current device position data (GPS required)
                     List<String> coordinate = await getPosition();
@@ -309,6 +329,14 @@ class __MethodCheckOutComponentState extends State<_MethodCheckOutComponent> {
                     History historyData = history.copyWith(
                       absentCheckOut: DateTime.now().millisecondsSinceEpoch,
                     );
+                    //History historyData = History(
+                    //  userID: user.id,
+                    //  userName: user.name,
+                    //  userPhoto: user.photoURL,
+                    //  absentCheckIn: int.parse(timeIN),
+                    //  absentCheckMid: int.parse(timeMID),
+                    //  absentCheckOut: DateTime.now().millisecondsSinceEpoch,
+                    //);
 
                     await AbsentServices.storeAbsentCollection(absentData);
 

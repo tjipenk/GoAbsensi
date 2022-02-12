@@ -4,6 +4,7 @@ class History extends Equatable {
   final String userID;
   final String userName;
   final String userPhoto;
+  final String jenisAbsen;
   final int absentCheckIn;
   final int absentCheckMid;
   final int absentCheckOut;
@@ -12,6 +13,7 @@ class History extends Equatable {
     this.userID,
     this.userName,
     this.userPhoto,
+    this.jenisAbsen,
     this.absentCheckIn,
     this.absentCheckMid,
     this.absentCheckOut,
@@ -21,6 +23,7 @@ class History extends Equatable {
         userID: this.userID,
         userName: this.userName,
         userPhoto: this.userPhoto,
+        jenisAbsen: this.jenisAbsen,
         absentCheckIn: this.absentCheckIn,
         absentCheckMid: absentCheckMid,
       );
@@ -29,8 +32,8 @@ class History extends Equatable {
         userID: this.userID,
         userName: this.userName,
         userPhoto: this.userPhoto,
+        jenisAbsen: this.jenisAbsen,
         absentCheckIn: this.absentCheckIn,
-        absentCheckMid: this.absentCheckMid,
         absentCheckOut: absentCheckOut,
       );
 
@@ -39,8 +42,9 @@ class History extends Equatable {
         userID,
         userName,
         userPhoto,
+        jenisAbsen,
         absentCheckIn,
         absentCheckMid,
-        absentCheckOut
+        absentCheckOut,
       ];
 }

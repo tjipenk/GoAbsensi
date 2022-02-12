@@ -119,7 +119,7 @@ class _HistoryListComponent extends StatelessWidget {
             ),
           );
         }
-        
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -164,7 +164,8 @@ class _HistoryListComponent extends StatelessWidget {
                   userName: historyProvider.histories[index].userName,
                   userPhoto: historyProvider.histories[index].userPhoto,
                   absentCheckIn: historyProvider.histories[index].absentCheckIn,
-                  absentCheckOut: historyProvider.histories[index].absentCheckOut ?? 0,
+                  absentCheckOut:
+                      historyProvider.histories[index].absentCheckOut ?? 0,
                 ),
               ),
             ),
@@ -179,14 +180,22 @@ class _HistoryComponent extends StatelessWidget {
   final String userName;
   final String userPhoto;
   final int absentCheckIn;
+  final int absentCheckMid;
   final int absentCheckOut;
 
-  _HistoryComponent({this.userName, this.userPhoto, this.absentCheckIn, this.absentCheckOut});
+  _HistoryComponent(
+      {this.userName,
+      this.userPhoto,
+      this.absentCheckIn,
+      this.absentCheckMid,
+      this.absentCheckOut});
 
   @override
   Widget build(BuildContext context) {
-    String checkInTime =  DateFormat('hh : mm WIB').format(DateTime.fromMillisecondsSinceEpoch(absentCheckIn));
-    String checkOutTime =  DateFormat('hh : mm WIB').format(DateTime.fromMillisecondsSinceEpoch(absentCheckOut));
+    String checkInTime = DateFormat('hh : mm WIB')
+        .format(DateTime.fromMillisecondsSinceEpoch(absentCheckIn));
+    String checkOutTime = DateFormat('hh : mm WIB')
+        .format(DateTime.fromMillisecondsSinceEpoch(absentCheckOut));
     DateTime dateCheckIn = DateTime.fromMillisecondsSinceEpoch(absentCheckIn);
     DateTime dateCheckOut = DateTime.fromMillisecondsSinceEpoch(absentCheckOut);
 
@@ -208,28 +217,31 @@ class _HistoryComponent extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          if (userPhoto == null) ClipOval(
-            child: Image.asset(
-              'assets/images/avatar.png',
-              width: 50,
-              height: 50,
-              fit: BoxFit.cover,
+          if (userPhoto == null)
+            ClipOval(
+              child: Image.asset(
+                'assets/images/avatar.png',
+                width: 50,
+                height: 50,
+                fit: BoxFit.cover,
+              ),
+            )
+          else
+            ClipOval(
+              child: Image.network(
+                userPhoto,
+                width: 46,
+                height: 46,
+                fit: BoxFit.cover,
+                loadingBuilder: (BuildContext context, Widget child,
+                    ImageChunkEvent loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return SpinKitFadingCircle(
+                    color: primaryColor,
+                  );
+                },
+              ),
             ),
-          )
-          else ClipOval(
-            child: Image.network(
-              userPhoto,
-              width: 46,
-              height: 46,
-              fit: BoxFit.cover,
-              loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
-                if (loadingProgress == null) return child;
-                return SpinKitFadingCircle(
-                  color: primaryColor,
-                );
-              },
-            ),
-          ),
           SizedBox(
             width: 16,
           ),
@@ -295,7 +307,9 @@ class _HistoryComponent extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    (absentCheckOut == 0) ? '-' : "$checkOutTime, ${dateCheckOut.day} ${dateCheckOut.monthName} ${dateCheckOut.year}",
+                    (absentCheckOut == 0)
+                        ? '-'
+                        : "$checkOutTime, ${dateCheckOut.day} ${dateCheckOut.monthName} ${dateCheckOut.year}",
                     style: semiBlackFont.copyWith(
                       fontSize: 11,
                     ),
