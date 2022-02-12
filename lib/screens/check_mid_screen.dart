@@ -191,9 +191,9 @@ class __MethodCheckMidComponentState extends State<_MethodCheckMidComponent> {
                   } else {
                     User user =
                         Provider.of<UserProvider>(context, listen: false).user;
-                    History history =
-                        Provider.of<HistoryProvider>(context, listen: false)
-                            .lastHistory;
+                    //History history =
+                    //    Provider.of<HistoryProvider>(context, listen: false)
+                    //        .lastHistory;
 
                     await setAbsentStatus("CHECK-MID");
                     await setTimeMID(
@@ -216,9 +216,9 @@ class __MethodCheckMidComponentState extends State<_MethodCheckMidComponent> {
                       jenis: absentJenis,
                     );
 
-                    History historyData = history.copyWithMid(
-                      absentCheckMid: DateTime.now().millisecondsSinceEpoch,
-                    );
+                    //History historyData = history.copyWithMid(
+                    //  absentCheckMid: DateTime.now().millisecondsSinceEpoch,
+                    //);
 
                     //History historyData = History(
                     //  userID: user.id,
@@ -306,9 +306,9 @@ class __MethodCheckMidComponentState extends State<_MethodCheckMidComponent> {
 
                     User user =
                         Provider.of<UserProvider>(context, listen: false).user;
-                    History history =
-                        Provider.of<HistoryProvider>(context, listen: false)
-                            .lastHistory;
+                    //History history =
+                    //    Provider.of<HistoryProvider>(context, listen: false)
+                    //        .lastHistory;
 
                     await setAbsentStatus("CHECK-MID");
 
@@ -325,9 +325,9 @@ class __MethodCheckMidComponentState extends State<_MethodCheckMidComponent> {
                       jenis: absentJenis,
                     );
 
-                    History historyData = history.copyWithMid(
-                      absentCheckMid: DateTime.now().millisecondsSinceEpoch,
-                    );
+                    //History historyData = history.copyWithMid(
+                    //  absentCheckMid: DateTime.now().millisecondsSinceEpoch,
+                    //);
 
                     await AbsentServices.storeAbsentCollection(absentData);
 
