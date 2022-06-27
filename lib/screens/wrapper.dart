@@ -11,8 +11,7 @@ class Wrapper extends StatelessWidget {
       return Scaffold(
         body: LoginScreen(),
       );
-    }
-    else {
+    } else {
       Provider.of<UserProvider>(context).loadUser(firebaseUser.uid);
       Provider.of<PresenceProvider>(context).getPresence(firebaseUser.uid);
       Provider.of<HistoryProvider>(context).loadHistory(firebaseUser.uid);

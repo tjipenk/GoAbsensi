@@ -14,14 +14,12 @@ class ValidationProvider extends ChangeNotifier {
   String get errorPasswordConfirmation => _errorPasswordConfirmation;
 
   void changeNIDK(String value) {
-    if (value.length == 10) {
+    if (value.length == 16) {
       _errorNIDK = "";
-    } 
-    else if (value.length == 0) {
-      _errorNIDK = "NIDK Harus Diisikan";
-    } 
-    else {
-      _errorNIDK = "NIDK Harus 10 Karakter";
+    } else if (value.length == 0) {
+      _errorNIDK = "NIK Harus Diisikan";
+    } else {
+      _errorNIDK = "NIK Harus 16 Karakter";
     }
 
     notifyListeners();
@@ -30,8 +28,7 @@ class ValidationProvider extends ChangeNotifier {
   void changeName(String value) {
     if (value.length == 0) {
       _errorName = "Nama Harus Diisikan";
-    } 
-    else {
+    } else {
       _errorName = "";
     }
 
@@ -41,11 +38,9 @@ class ValidationProvider extends ChangeNotifier {
   void changeEmail(String value) {
     if (value.length == 0) {
       _errorEmail = "Email Harus Diisikan";
-    }
-    else if (EmailValidator.validate(value) == false) {
+    } else if (EmailValidator.validate(value) == false) {
       _errorEmail = "Email Harus Valid";
-    }
-    else {
+    } else {
       _errorEmail = "";
     }
 
@@ -55,11 +50,9 @@ class ValidationProvider extends ChangeNotifier {
   void changePassword(String value) {
     if (value.length == 0) {
       _errorPassword = "Password Harus Diisikan";
-    }
-    else if (value.length < 6) {
+    } else if (value.length < 6) {
       _errorPassword = "Password Minimal 6 karakter";
-    }
-    else {
+    } else {
       _errorPassword = "";
     }
 
@@ -69,11 +62,9 @@ class ValidationProvider extends ChangeNotifier {
   void changePasswordConfirmation(String value, String password) {
     if (value.length == 0) {
       _errorPasswordConfirmation = "Password Harus Diisikan";
-    }
-    else if (value != password) {
+    } else if (value != password) {
       _errorPasswordConfirmation = "Konfirmasi Tidak Sama";
-    }
-    else {
+    } else {
       _errorPasswordConfirmation = "";
     }
 
@@ -81,10 +72,13 @@ class ValidationProvider extends ChangeNotifier {
   }
 
   bool isAllValidate() {
-    if (_errorNIDK == "" && _errorName == "" && _errorEmail == "" && _errorPassword == "" && _errorPasswordConfirmation == "") {
+    if (_errorNIDK == "" &&
+        _errorName == "" &&
+        _errorEmail == "" &&
+        _errorPassword == "" &&
+        _errorPasswordConfirmation == "") {
       return true;
-    }
-    else {
+    } else {
       return false;
     }
   }

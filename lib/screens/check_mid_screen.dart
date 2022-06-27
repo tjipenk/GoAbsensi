@@ -148,6 +148,7 @@ class __MethodCheckMidComponentState extends State<_MethodCheckMidComponent> {
                   });
 
                   String absentStatus = await getAbsentStatus();
+                  String absentJenis = await getAbsentJenis();
                   bool isAwayTime = await isCheckOutTime();
 
                   if (absentStatus == "CHECK-MID") {
@@ -190,11 +191,20 @@ class __MethodCheckMidComponentState extends State<_MethodCheckMidComponent> {
                   } else {
                     User user =
                         Provider.of<UserProvider>(context, listen: false).user;
-                    History history =
-                        Provider.of<HistoryProvider>(context, listen: false)
-                            .lastHistory;
+                    //History history =
+                    //    Provider.of<HistoryProvider>(context, listen: false)
+                    //        .lastHistory;
 
                     await setAbsentStatus("CHECK-MID");
+                    await setTimeMID(
+                        DateTime.now().millisecondsSinceEpoch.toString());
+
+                    // Get CheckIN and CheckMID Time
+                    String timeIN = await getTimeIN();
+                    String timeMID = await getTimeMID();
+
+                    /// Get current device position data (GPS required)
+                    List<String> coordinate = await getPosition();
 
                     Absent absentData = Absent(
                       userID: user.id,
@@ -202,11 +212,23 @@ class __MethodCheckMidComponentState extends State<_MethodCheckMidComponent> {
                       userPhoto: user.photoURL,
                       absentTime: DateTime.now(),
                       absentType: 'CHECK-MID',
+                      coordinate: coordinate,
+                      jenis: absentJenis,
                     );
 
-                    History historyData = history.copyWithMid(
-                      absentCheckMid: DateTime.now().millisecondsSinceEpoch,
-                    );
+                    //History historyData = history.copyWithMid(
+                    //  absentCheckMid: DateTime.now().millisecondsSinceEpoch,
+                    //);
+
+                    //History historyData = History(
+                    //  userID: user.id,
+                    //  userName: user.name,
+                    //  userPhoto: user.photoURL,
+                    //  jenisAbsen: absentJenis,
+                    //  absentCheckIn: int.parse(timeIN),
+                    //  absentCheckMid: int.parse(timeMID),
+                    //  absentCheckOut: null,
+                    //);
 
                     await AbsentServices.storeAbsentCollection(absentData);
 
@@ -217,8 +239,8 @@ class __MethodCheckMidComponentState extends State<_MethodCheckMidComponent> {
                     // Provider.of<PresenceProvider>(context, listen: false)
                     //     .updateTotal(user.id);
 
-                    Provider.of<HistoryProvider>(context, listen: false)
-                        .updateHistory(historyData);
+                    //Provider.of<HistoryProvider>(context, listen: false)
+                    //    .updateHistory(historyData);
 
                     Navigator.pushReplacementNamed(
                       context,
@@ -242,6 +264,8 @@ class __MethodCheckMidComponentState extends State<_MethodCheckMidComponent> {
                 iconPath: 'assets/images/scan_qr.png',
                 onTap: () async {
                   String absentStatus = await getAbsentStatus();
+                  String absentJenis = await getAbsentJenis();
+
                   String scanResult = await scanner.scan();
 
                   if (absentStatus == "CHECK-MID") {
@@ -282,11 +306,14 @@ class __MethodCheckMidComponentState extends State<_MethodCheckMidComponent> {
 
                     User user =
                         Provider.of<UserProvider>(context, listen: false).user;
-                    History history =
-                        Provider.of<HistoryProvider>(context, listen: false)
-                            .lastHistory;
+                    //History history =
+                    //    Provider.of<HistoryProvider>(context, listen: false)
+                    //        .lastHistory;
 
                     await setAbsentStatus("CHECK-MID");
+
+                    /// Get current device position data (GPS required)
+                    List<String> coordinate = await getPosition();
 
                     Absent absentData = Absent(
                       userID: user.id,
@@ -294,11 +321,13 @@ class __MethodCheckMidComponentState extends State<_MethodCheckMidComponent> {
                       userPhoto: user.photoURL,
                       absentTime: DateTime.now(),
                       absentType: 'CHECK-MID',
+                      coordinate: coordinate,
+                      jenis: absentJenis,
                     );
 
-                    History historyData = history.copyWithMid(
-                      absentCheckMid: DateTime.now().millisecondsSinceEpoch,
-                    );
+                    //History historyData = history.copyWithMid(
+                    //  absentCheckMid: DateTime.now().millisecondsSinceEpoch,
+                    //);
 
                     await AbsentServices.storeAbsentCollection(absentData);
 
@@ -307,8 +336,8 @@ class __MethodCheckMidComponentState extends State<_MethodCheckMidComponent> {
                     // Provider.of<PresenceProvider>(context, listen: false)
                     //     .updateTotal(user.id);
 
-                    Provider.of<HistoryProvider>(context, listen: false)
-                        .updateHistory(historyData);
+                    //Provider.of<HistoryProvider>(context, listen: false)
+                    //    .updateHistory(historyData);
 
                     Navigator.pushReplacementNamed(
                       context,
@@ -406,7 +435,8 @@ class _ActivityCheckMidComponent extends StatelessWidget {
                   scrollDirection: Axis.vertical,
                   itemCount: items.length,
                   itemBuilder: (context, index) => _UserCheckMidComponent(
-                    userName: items[index]['userName'],
+                    userName:
+                        items[index]['jenis'] + '- ' + items[index]['userName'],
                     absentTime: items[index]['absentTime'],
                     photoURL: items[index]['userPhoto'],
                   ),

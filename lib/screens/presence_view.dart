@@ -138,8 +138,10 @@ class _ClockPresenceComponent extends StatelessWidget {
 class _PresenceActivityComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    int startTimeToday = DateTime.now().subtract(Duration(hours: 12)).millisecondsSinceEpoch;
-    int endTimeToday = DateTime.now().add(Duration(hours: 12)).millisecondsSinceEpoch;
+    int startTimeToday =
+        DateTime.now().subtract(Duration(hours: 12)).millisecondsSinceEpoch;
+    int endTimeToday =
+        DateTime.now().add(Duration(hours: 12)).millisecondsSinceEpoch;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,7 +158,11 @@ class _PresenceActivityComponent extends StatelessWidget {
           height: 16,
         ),
         StreamBuilder(
-          stream: AbsentServices.absentDatabase.orderByChild('absentTime').startAt(startTimeToday).endAt(endTimeToday).onValue,
+          stream: AbsentServices.absentDatabase
+              .orderByChild('absentTime')
+              .startAt(startTimeToday)
+              .endAt(endTimeToday)
+              .onValue,
           builder: (BuildContext context, snapshot) {
             if (snapshot.hasData) {
               List items = [];
@@ -211,7 +217,8 @@ class _PresenceActivityComponent extends StatelessWidget {
                   scrollDirection: Axis.vertical,
                   itemCount: items.length,
                   itemBuilder: (context, index) => _UserPresenceComponent(
-                    userName: items[index]['userName'],
+                    userName:
+                        items[index]['jenis'] + '- ' + items[index]['userName'],
                     absentTime: items[index]['absentTime'],
                     photoURL: items[index]['userPhoto'],
                   ),
@@ -239,10 +246,11 @@ class _UserPresenceComponent extends StatelessWidget {
   final String photoURL;
 
   _UserPresenceComponent({this.userName, this.absentTime, this.photoURL});
-  
+
   @override
   Widget build(BuildContext context) {
-    String time =  DateFormat('hh : mm : ss').format(DateTime.fromMillisecondsSinceEpoch(absentTime));
+    String time = DateFormat('hh : mm : ss')
+        .format(DateTime.fromMillisecondsSinceEpoch(absentTime));
 
     return Container(
       width: deviceWidth(context),
@@ -262,28 +270,31 @@ class _UserPresenceComponent extends StatelessWidget {
       ),
       child: Row(
         children: [
-          if (photoURL == null) ClipOval(
-            child: Image.asset(
-              'assets/images/avatar.png',
-              width: 46,
-              height: 46,
-              fit: BoxFit.cover,
+          if (photoURL == null)
+            ClipOval(
+              child: Image.asset(
+                'assets/images/avatar.png',
+                width: 46,
+                height: 46,
+                fit: BoxFit.cover,
+              ),
+            )
+          else
+            ClipOval(
+              child: Image.network(
+                photoURL,
+                width: 46,
+                height: 46,
+                fit: BoxFit.cover,
+                loadingBuilder: (BuildContext context, Widget child,
+                    ImageChunkEvent loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return SpinKitFadingCircle(
+                    color: primaryColor,
+                  );
+                },
+              ),
             ),
-          )
-          else ClipOval(
-            child: Image.network(
-              photoURL,
-              width: 46,
-              height: 46,
-              fit: BoxFit.cover,
-              loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
-                if (loadingProgress == null) return child;
-                return SpinKitFadingCircle(
-                  color: primaryColor,
-                );
-              },
-            ),
-          ),
           SizedBox(
             width: 16,
           ),

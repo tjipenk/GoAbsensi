@@ -20,18 +20,18 @@ class AuthServices {
       await UserServices.updateUser(user);
 
       return ResponseHandler(user: user);
-    } 
-    on auth.FirebaseAuthException catch (e) {
+    } on auth.FirebaseAuthException catch (e) {
       return ResponseHandler(
         message: e.code,
       );
-    } 
+    }
   }
 
   static Future<ResponseHandler> logIn(Auth authData) async {
     try {
       bool checkEmail = await UserServices.isEmailExists(authData.email);
-      bool matchImei = await UserServices.isImeiMatch(authData.email);
+      //bool matchImei = await UserServices.isImeiMatch(authData.email);
+      bool matchImei = true;
 
       if (!checkEmail) {
         return ResponseHandler(
@@ -44,15 +44,14 @@ class AuthServices {
       }
 
       auth.UserCredential result = await _auth.signInWithEmailAndPassword(
-        email: authData.email, 
+        email: authData.email,
         password: authData.password,
       );
 
       User user = await result.user.fromFireStore();
 
       return ResponseHandler(user: user);
-    }
-    catch (e) {
+    } catch (e) {
       return ResponseHandler(
         message: 'wrong-password',
       );
@@ -64,8 +63,7 @@ class AuthServices {
       await _auth.sendPasswordResetEmail(email: email);
 
       return ResponseHandler();
-    } 
-    catch (e) {
+    } catch (e) {
       return ResponseHandler(
         message: 'user-not-found',
       );

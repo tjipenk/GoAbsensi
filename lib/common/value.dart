@@ -1,3 +1,3 @@
 part of 'common.dart';
 
-String oneSignalAppID = '867be9ac-4b37-49ef-9a56-657ce0e4540d';
+String oneSignalAppID = '8e945653-7fe9-4ceb-aa86-c0122ce38f4a';

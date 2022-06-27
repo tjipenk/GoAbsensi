@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:go_absensi/common/common.dart';
+import 'package:presensi_pplh/common/common.dart';
 
 part 'custom_text_field.dart';
 part 'custom_raised_button.dart';
